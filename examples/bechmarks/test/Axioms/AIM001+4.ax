@@ -1,0 +1,42 @@
+%------------------------------------------------------------------------------
+% File     : AIM001+4 : TPTP v6.5.0. Released v6.5.0.
+% Domain   : Abelian Inner Mappings
+% Axioms   : Abelian Inner Mapping training axioms, group 4
+% Version  : [Ver16] axioms.
+% English  :
+
+% Refs     : [Ver16] Veroff (2016), Email to Geoff Sutcliffe
+% Source   : [Ver16]
+% Names    : Train4.in [Ver16]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    5 (   5 unit)
+%            Number of atoms       :    5 (   5 equality)
+%            Maximal formula depth :    5 (   5 average)
+%            Number of connectives :    0 (   0   ~;   0   |;   0   &)
+%                                         (   0 <=>;   0  =>;   0  <=;   0 <~>)
+%                                         (   0  ~|;   0  ~&)
+%            Number of predicates  :    1 (   0 propositional; 2-2 arity)
+%            Number of functors    :    7 (   1 constant; 0-3 arity)
+%            Number of variables   :   18 (   0 sgn;  18   !;   0   ?)
+%            Maximal term depth    :    4 (   3 average)
+% SPC      : FOF_SAT_RFO_PEQ
+
+% Comments :
+%------------------------------------------------------------------------------
+fof(train4_0001,axiom,(
+    ! [A,B,C] : commutator(commutator(A,B),C) = commutator(A,commutator(B,C)) )).
+
+fof(train4_0002,axiom,(
+    ! [A,B,C,D] : associator(A,commutator(B,C),D) = identity )).
+
+fof(train4_0003,axiom,(
+    ! [A,B,C] : multiply(middle_inner_mapping(A,B),multiply(middle_inner_mapping(C,B),middle_inner_mapping(A,B))) = middle_inner_mapping(multiply(A,multiply(C,A)),B) )).
+
+fof(train4_0004,axiom,(
+    ! [A,B,C,D] : multiply(left_inner_mapping(A,B,C),multiply(left_inner_mapping(D,B,C),left_inner_mapping(A,B,C))) = left_inner_mapping(multiply(A,multiply(D,A)),B,C) )).
+
+fof(train4_0005,axiom,(
+    ! [A,B,C,D] : multiply(right_inner_mapping(A,B,C),multiply(right_inner_mapping(D,B,C),right_inner_mapping(A,B,C))) = right_inner_mapping(multiply(A,multiply(D,A)),B,C) )).
+
+%------------------------------------------------------------------------------

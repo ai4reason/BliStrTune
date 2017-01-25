@@ -1,0 +1,36 @@
+%------------------------------------------------------------------------------
+% File     : AIM001+5 : TPTP v6.5.0. Released v6.5.0.
+% Domain   : Abelian Inner Mappings
+% Axioms   : Abelian Inner Mapping testing axioms
+% Version  : [Ver16] axioms.
+% English  :
+
+% Refs     : [Ver16] Veroff (2016), Email to Geoff Sutcliffe
+% Source   : [Ver16]
+% Names    : Test.in [Ver16]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    3 (   3 unit)
+%            Number of atoms       :    3 (   3 equality)
+%            Maximal formula depth :    5 (   4 average)
+%            Number of connectives :    0 (   0   ~;   0   |;   0   &)
+%                                         (   0 <=>;   0  =>;   0  <=;   0 <~>)
+%                                         (   0  ~|;   0  ~&)
+%            Number of predicates  :    1 (   0 propositional; 2-2 arity)
+%            Number of functors    :    5 (   1 constant; 0-3 arity)
+%            Number of variables   :    9 (   0 sgn;   9   !;   0   ?)
+%            Maximal term depth    :    3 (   3 average)
+% SPC      : FOF_SAT_RFO_PEQ
+
+% Comments :
+%------------------------------------------------------------------------------
+fof(test_0001,axiom,(
+    ! [A,B,C] : commutator(commutator(A,B),C) = commutator(A,commutator(B,C)) )).
+
+fof(test_0002,axiom,(
+    ! [A,B,C,D] : associator(A,commutator(B,C),D) = identity )).
+
+fof(test_0003,axiom,(
+    ! [A,B] : left_division(multiply(A,B),identity) = multiply(left_division(A,identity),left_division(B,identity)) )).
+
+%------------------------------------------------------------------------------

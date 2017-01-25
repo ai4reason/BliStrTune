@@ -1,0 +1,125 @@
+%------------------------------------------------------------------------------
+% File     : AIM001+0 : TPTP v6.5.0. Released v6.5.0.
+% Domain   : Abelian Inner Mappings
+% Axioms   : Abelian Inner Mapping axioms
+% Version  : [Ver16] axioms.
+% English  :
+
+% Refs     : [Ver16] Veroff (2016), Email to Geoff Sutcliffe
+% Source   : [Ver16]
+% Names    : Axioms [Ver16]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   26 (  17 unit)
+%            Number of atoms       :   37 (  37 equality)
+%            Maximal formula depth :    8 (   5 average)
+%            Number of connectives :   22 (  11   ~;  11   |;   0   &)
+%                                         (   0 <=>;   0  =>;   0  <=;   0 <~>)
+%                                         (   0  ~|;   0  ~&)
+%            Number of predicates  :    1 (   0 propositional; 2-2 arity)
+%            Number of functors    :    9 (   1 constant; 0-3 arity)
+%            Number of variables   :   75 (   0 sgn;  75   !;   0   ?)
+%            Maximal term depth    :    4 (   2 average)
+% SPC      : FOF_SAT_RFO_PEQ
+
+% Comments :
+%------------------------------------------------------------------------------
+fof(aim_0001,axiom,(
+    ! [A] : multiply(identity,A) = A )).
+
+fof(aim_0002,axiom,(
+    ! [A] : multiply(A,identity) = A )).
+
+fof(aim_0003,axiom,(
+    ! [A,B] : left_division(A,multiply(A,B)) = B )).
+
+fof(aim_0004,axiom,(
+    ! [A,B] : multiply(A,left_division(A,B)) = B )).
+
+fof(aim_0005,axiom,(
+    ! [A,B] : right_division(multiply(A,B),B) = A )).
+
+fof(aim_0006,axiom,(
+    ! [A,B] : multiply(right_division(A,B),B) = A )).
+
+fof(aim_0007,axiom,(
+    ! [A,B,C] : left_division(multiply(A,multiply(B,C)),multiply(multiply(A,B),C)) = associator(A,B,C) )).
+
+fof(aim_0008,axiom,(
+    ! [A,B] : left_division(multiply(A,B),multiply(B,A)) = commutator(B,A) )).
+
+fof(aim_0009,axiom,(
+    ! [A,B,C] : left_division(multiply(A,B),multiply(A,multiply(B,C))) = left_inner_mapping(C,B,A) )).
+
+fof(aim_0010,axiom,(
+    ! [A,B,C] : right_division(multiply(multiply(A,B),C),multiply(B,C)) = right_inner_mapping(A,B,C) )).
+
+fof(aim_0011,axiom,(
+    ! [A,B] : left_division(A,multiply(B,A)) = middle_inner_mapping(B,A) )).
+
+fof(aim_0012,axiom,(
+    ! [A,B,C] : middle_inner_mapping(middle_inner_mapping(A,B),C) = middle_inner_mapping(middle_inner_mapping(A,C),B) )).
+
+fof(aim_0013,axiom,(
+    ! [A,B,C,D] : middle_inner_mapping(left_inner_mapping(A,B,C),D) = left_inner_mapping(middle_inner_mapping(A,D),B,C) )).
+
+fof(aim_0014,axiom,(
+    ! [A,B,C,D] : middle_inner_mapping(right_inner_mapping(A,B,C),D) = right_inner_mapping(middle_inner_mapping(A,D),B,C) )).
+
+fof(aim_0015,axiom,(
+    ! [A,B,C,D,E] : left_inner_mapping(right_inner_mapping(A,B,C),D,E) = right_inner_mapping(left_inner_mapping(A,D,E),B,C) )).
+
+fof(aim_0016,axiom,(
+    ! [A,B,C,D,E] : left_inner_mapping(left_inner_mapping(A,B,C),D,E) = left_inner_mapping(left_inner_mapping(A,D,E),B,C) )).
+
+fof(aim_0017,axiom,(
+    ! [A,B,C,D,E] : right_inner_mapping(right_inner_mapping(A,B,C),D,E) = right_inner_mapping(right_inner_mapping(A,D,E),B,C) )).
+
+fof(aim_0018,axiom,(
+    ! [A,B,C,D] :
+      ( multiply(A,B) != C
+      | multiply(A,D) != C
+      | D = B ) )).
+
+fof(aim_0019,axiom,(
+    ! [A,B,C,D] :
+      ( multiply(A,B) != C
+      | multiply(D,B) != C
+      | D = A ) )).
+
+fof(aim_0020,axiom,(
+    ! [A,B,C] :
+      ( multiply(A,B) != multiply(A,C)
+      | B = C ) )).
+
+fof(aim_0021,axiom,(
+    ! [A,B,C] :
+      ( multiply(A,B) != multiply(C,B)
+      | A = C ) )).
+
+fof(aim_0022,axiom,(
+    ! [A,B,C] :
+      ( associator(A,B,C) != identity
+      | left_inner_mapping(C,B,A) = C ) )).
+
+fof(aim_0023,axiom,(
+    ! [A,B,C] :
+      ( left_inner_mapping(A,B,C) != A
+      | associator(C,B,A) = identity ) )).
+
+fof(aim_0024,axiom,(
+    ! [A,B] :
+      ( middle_inner_mapping(A,B) != A
+      | middle_inner_mapping(B,A) = B ) )).
+
+fof(aim_0025,axiom,(
+    ! [A,B] :
+      ( middle_inner_mapping(A,B) != A
+      | commutator(A,B) = identity ) )).
+
+fof(aim_0026,axiom,(
+    ! [A,B] :
+      ( commutator(A,B) != identity
+      | middle_inner_mapping(A,B) = A ) )).
+
+%------------------------------------------------------------------------------

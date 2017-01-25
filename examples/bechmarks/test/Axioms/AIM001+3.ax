@@ -1,0 +1,33 @@
+%------------------------------------------------------------------------------
+% File     : AIM001+3 : TPTP v6.5.0. Released v6.5.0.
+% Domain   : Abelian Inner Mappings
+% Axioms   : Abelian Inner Mapping training axioms, group 3
+% Version  : [Ver16] axioms.
+% English  :
+
+% Refs     : [Ver16] Veroff (2016), Email to Geoff Sutcliffe
+% Source   : [Ver16]
+% Names    : Train3.in [Ver16]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    2 (   2 unit)
+%            Number of atoms       :    2 (   2 equality)
+%            Maximal formula depth :    4 (   4 average)
+%            Number of connectives :    0 (   0   ~;   0   |;   0   &)
+%                                         (   0 <=>;   0  =>;   0  <=;   0 <~>)
+%                                         (   0  ~|;   0  ~&)
+%            Number of predicates  :    1 (   0 propositional; 2-2 arity)
+%            Number of functors    :    4 (   1 constant; 0-3 arity)
+%            Number of variables   :    6 (   0 sgn;   6   !;   0   ?)
+%            Maximal term depth    :    4 (   4 average)
+% SPC      : FOF_SAT_RFO_PEQ
+
+% Comments :
+%------------------------------------------------------------------------------
+fof(train3_0001,axiom,(
+    ! [A,B,C] : multiply(multiply(A,multiply(A,B)),C) = multiply(A,multiply(A,multiply(B,C))) )).
+
+fof(train3_0002,axiom,(
+    ! [A,B,C] : left_division(left_inner_mapping(A,B,C),identity) = left_inner_mapping(left_division(A,identity),B,C) )).
+
+%------------------------------------------------------------------------------

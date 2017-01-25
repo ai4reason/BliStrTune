@@ -1,0 +1,157 @@
+#!/usr/bin/python
+
+import os
+import sys
+import json
+from os.path import join
+from os import system
+
+from epy import eprover
+from epy import epymils
+
+TIMEOUT_GLOBAL = @@@BST_TIMEOUT_GLOBAL@@@
+TIMEOUT_FINETUNES = @@@BST_TIMEOUT_FINETUNES@@@
+CUTOFF = @@@BST_CUTOFF@@@
+epymils.MIN_SLOTS = @@@BST_MIN_CEFS@@@
+SLOTS = @@@BST_MAX_CEFS@@@
+CORES = @@@CORES@@@
+
+ITERS = 2
+PROBLEMS = "200"
+INSTANCE_FILE = "data/problems.txt"
+
+def log(msg, args=None):
+   if args:
+      args = [str(x) for x in args]
+   sys.stdout.write(msg+("\t"+("\n\t".join(args)) if args else "")+"\n")
+   sys.stdout.flush()
+
+def log_params(params, label):
+   hash = eprover.protocol.proto_hash(epymils.e_proto(params))
+   log("")
+   log(label+"\t[ eproto/%s/%s/%s ]" % (hash[0:3], hash[3:6], hash))
+   log("\t%(tord)s %(sel)s %(prord)s %(simparamod)s srd=%(srd)s forwardcntxtsr=%(forwardcntxtsr)s splaggr=%(splaggr)s splcl=%(splcl)s" % params)
+   if params["sine"]=="1":
+      log("\t"+(epymils.E_SINE_ARGS % params))
+   log("", ["%s*%s" % (params["freq%d"%i],epymils.block2cef(params["cef%d"%i])) for i in range(int(params["slots"]))])
+
+def log_proto(name, params):
+   file(join("protos", name),"w").write(epymils.e_proto(params))
+
+def run_iter_global(iter_global, cefs, defaults=None):
+   d_global = "iter-%02d-A-global" % iter_global
+   log("\nGLOBAL_TUNE %s" % d_global)
+   if os.path.exists(d_global):
+      os.system("rm -fr %s" % d_global)
+   os.system("mkdir -p %s" % d_global)
+
+   params = epymils.parameters_global(SLOTS, cefs)
+   if defaults:
+      epymils.parameters_set_default(params, defaults)
+
+   scenario = epymils.scenario_global(CUTOFF, TIMEOUT_GLOBAL, 
+      d_global, INSTANCE_FILE, bin="../../epymils_globaltune.py")
+
+   f_params = join(d_global, "params.txt")
+   f_scenario = join(d_global, "scenario.txt")
+   d_output = join(d_global, "paramils-out")
+
+   file(f_params,"w").write(str(params))
+   file(f_scenario,"w").write(scenario)
+   
+   out = None #file(join(d_global,"paramils.out"),"w")
+   epymils.run_paramils(f_scenario,count=CORES,N=PROBLEMS,validN="0",init="1" if defaults else "0",out=out)
+   in_params = epymils.best_params(d_output, report_quality=False, select_index=1)
+   out_params = epymils.best_params(d_output, report_quality=True)
+
+   log_params(in_params, "IN:")
+   log_params(out_params, "OUT:")
+   log_proto("iter-%02d-A-global-in"%iter_global, in_params)
+   log_proto("iter-%02d-A-global-out"%iter_global, out_params)
+
+   #print "Best: ", params
+   return out_params
+
+def run_iter_finetunes(iter_global, cefs, params):
+   d_finetune = "iter-%02d-C-finetunes" % iter_global
+   log("\nFINE_TUNES %s" % d_finetune)
+   if os.path.exists(d_finetune):
+      os.system("rm -fr %s" % d_finetune)
+   os.makedirs(d_finetune)
+
+   #print str(epymils.parameters_finetunes(defaults))
+   tunes_params = epymils.parameters_finetunes(params)
+   parstr = repr(json.dumps(params))
+   scenario = epymils.scenario_finetunes(parstr, CUTOFF, TIMEOUT_FINETUNES, d_finetune,
+      INSTANCE_FILE, bin="../../epymils_finetunes.py")
+
+   f_params = join(d_finetune, "params.txt")
+   f_scenario = join(d_finetune, "scenario.txt")
+   d_output = join(d_finetune, "paramils-out")
+
+   file(f_params,"w").write(str(tunes_params))
+   file(f_scenario,"w").write(scenario)
+
+   out = None #file(join(d_finetune,"paramils.out"),"w")
+   epymils.run_paramils(f_scenario,count=CORES,N=PROBLEMS,validN="0",init="1",out=out)
+   best_params = epymils.best_params(d_output, report_quality=True)
+
+   log_proto("iter-%02d-C-fintetunes-in"%iter_global, params)
+   changes = epymils.params_update_finetunes(params, best_params)
+   for old in changes:
+      index = cefs.index(old)
+      cefs[index] = changes[old]
+      log(">>>>\t[%2d] %s ---> %s" % (index,epymils.block2cef(old),epymils.block2cef(changes[old])))
+   if not changes:
+      log(">>>>\tNo improvement!")
+
+   log_proto("iter-%02d-C-fintetunes-out"%iter_global, params)
+   
+   return params
+   
+def make_params(init):
+   params = {}
+   i = 0
+   while i < len(init):
+      try:
+         params[init[i]] = init[i+1]
+      except:
+         raise Exception(str(init))
+      i += 2
+   return params
+
+def extend_cefs(cefs, params):
+   keys = [x for x in params if x.startswith("cef")]
+   for key in keys:
+      cef = params[key]
+      if cef not in cefs:
+         log("Extending CEFS with %s"%cef)
+         cefs.append(cef)
+
+CEFS = epymils.cefs.bests(50)
+if len(sys.argv) == 2:
+   defaults = make_params(file(sys.argv[1]).read().rstrip().split(" "))
+   extend_cefs(CEFS, defaults)
+   update_cefs = True
+else:
+   defaults = None
+   update_cefs = False
+
+system("rm -fr protos")
+system("mkdir -p protos")
+for it in range(ITERS):
+   log("\n*** ITER %d ***\n" % it)
+   log("CEFS:", ["[%2d] %s"%(n,s) for (n,s) in enumerate(map(epymils.block2cef,CEFS))])
+   params = run_iter_global(it, CEFS, defaults)
+   params = run_iter_finetunes(it, CEFS, params)
+   extend_cefs(CEFS, params)
+   defaults = params
+
+res = ["%s %s" % (x,params[x]) for x in sorted(params.keys())]
+log("\nRESULT: %s" % (" ".join(res)))
+
+if update_cefs:
+   for i in range(int(params["slots"])):
+      cef = params["cef%d"%i]
+      epymils.cefs.used(epymils.block2cef(cef))
+
