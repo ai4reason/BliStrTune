@@ -3,7 +3,7 @@ Hierarchical invention of targeted  E prover strategies
 
 This is a pre-BETA release.  It is usable with some effort.
 
-## Requirments
+## Requirements
 
 This distribution contains other software packages:
 
@@ -12,3 +12,4 @@ This distribution contains other software packages:
 * GNU Parallel (https://www.gnu.org/software/parallel)
 
 To run this software you need to have Python, Perl, and Ruby installed.
+
