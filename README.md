@@ -24,29 +24,40 @@ To run this software you need to have Python, Perl, and Ruby installed.
 ### Prepare experiments
 
 0. Setup environment before running import scripts:
-
-   $ . ./setenv.sh
    
+   ```
+   $ . ./setenv.sh
+   ```
    Always run the scripts from the BliStrTune directory.
 
 1. Import benchmark problems:
 
+   ```
    $ ./import-benchmark.sh examples/bechmarks/test test  
    importing examples/bechmarks/test as test ... 10 problems imported
+   ```
 
 2. Import initial protocols:
 
+   ```
    $ ./import-inits.sh examples/inits/tptp tptp
    importing examples/inits/tptp as tptp ... 10 strategies imported
+   ```
 
 ### Setup experiments
 
+   ```
    $ vi BliStrTune-RUN.sh
+   ```
 
 ### Run experiments
 
+   ```
    $ ./BliStrTune-RUN.sh
+   ```
 
 ### Get results 
 
+   ```
    $ ./expres-greedy.py test 1
+   ```
