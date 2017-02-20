@@ -20,7 +20,7 @@ BST_INITSTRATS=tptp
 # Non-hackers do not change below this line
 #
 
-. ./setenv.sh
+#. ./setenv.sh      # always call this yourself before tuning
 
 export CORES
 
@@ -54,6 +54,9 @@ chmod a+x $DIR/epymils.py
 
 cp -r $ATP_ROOT/inits/$BST_INITSTRATS/${BST_EVAL_LIMIT}s $DIR/initprots
 cp -r $ATP_ROOT/benchmarks/$BST_BENCHMARK $DIR/allprobs
+
+mkdir -p $DIR/strats
+mkdir -p $DIR/prots
 
 (cd $DIR; ./BliStrTune.pl)
 

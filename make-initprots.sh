@@ -16,7 +16,7 @@ PROTS=$ATP_ROOT/inits/$INITS/prots
 
 OUT=$ATP_ROOT/inits/$INITS/${LIMIT}s
 
-echo "initial evaluation of strategies $INITS on bechmark $BID @ ${LIMIT}s"
+echo "initial evaluation of strategies $INITS on benchmark $BID @ ${LIMIT}s"
 if [ -d "$OUT" ]; then
    echo "allready done"
    exit 0;
