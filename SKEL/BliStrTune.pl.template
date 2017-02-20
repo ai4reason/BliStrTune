@@ -304,7 +304,9 @@ sub GrowStratILS
     my $dir = "$gepymils/epymils-$iter-$subiter";
     chdir $dir;
 
-    my $newstrparams = `$grootdir/epymils.py $gstratsdir/$str | tee epymils.log | grep 'RESULT:' | tail -n1`;
+    #my $newstrparams = `$grootdir/epymils.py $gstratsdir/$str | tee epymils.log | grep 'RESULT:' | tail -n1`;
+    system("$grootdir/epymils.py $gstratsdir/$str | tee epymils.log");
+    my $newstrparams = `cat epymils.log | grep 'RESULT:' | tail -n1`;
     #my $newstrparams = `$gPIdir/param_ils_2_3_run.rb -numRun $gN -scenariofile $gPIscendir/scenario-$str.iter$iter.txt  -validN $testnr -init $gstratsdir/$str | tee $str.iter$iter.mylog |  grep 'Active parameters:' | tail -n1`;
     #my $newstrparams = `CORES=$gCores ./paral_param_ils.sh -scenariofile $gPIscendir/scenario-$str.iter$iter.txt -validN $testnr -init $gstratsdir/$str | tail -n1`;
 

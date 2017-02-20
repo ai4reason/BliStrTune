@@ -39,6 +39,8 @@ def log_proto(name, params):
    file(join("protos", name),"w").write(epymils.e_proto(params))
 
 def run_iter_global(iter_global, cefs, defaults=None):
+   "Run global-tuning phase"
+
    d_global = "iter-%02d-A-global" % iter_global
    log("\nGLOBAL_TUNE %s" % d_global)
    if os.path.exists(d_global):
@@ -73,6 +75,8 @@ def run_iter_global(iter_global, cefs, defaults=None):
    return out_params
 
 def run_iter_finetunes(iter_global, cefs, params):
+   "Run fine-tuning phase"
+
    d_finetune = "iter-%02d-C-finetunes" % iter_global
    log("\nFINE_TUNES %s" % d_finetune)
    if os.path.exists(d_finetune):
@@ -110,6 +114,8 @@ def run_iter_finetunes(iter_global, cefs, params):
    return params
    
 def make_params(init):
+   "Translate list [key, val, key, ...] to dict {key: val}"
+   
    params = {}
    i = 0
    while i < len(init):
@@ -121,6 +127,8 @@ def make_params(init):
    return params
 
 def extend_cefs(cefs, params):
+   "Extend cefs with CEFs from params."
+
    keys = [x for x in params if x.startswith("cef")]
    for key in keys:
       cef = params[key]
