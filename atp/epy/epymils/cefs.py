@@ -3,7 +3,7 @@ from os.path import join
 from itertools import cycle
 import json
 
-from . import Domain, cef2block
+from .params import Domain, cef2block
 
 GLOBAL_CEFS = join(getenv("ATP_ROOT", join(getenv("HOME"), "atp")), "CEFS.json")
 
