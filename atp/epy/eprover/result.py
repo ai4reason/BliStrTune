@@ -27,18 +27,28 @@ def type_val(strval):
    return strval
 
 class Result(dict):
-   def __init__(self, output=None, result=None):
+   def __init__(self, output=None, result=None, samples=False):
       if output:
-         self.parse(output)
+         self.parse(output, samples=samples)
       if result:
          dict.update(self, result)
 
-   def parse(self, output):
+   def parse(self, output, samples=False):
+      if samples:
+         self["trainpos"] = []
+         self["trainneg"] = []
+
       for line in output.split("\n"):
          for pat in PATS:
             mo = PATS[pat].search(line)
             if mo:
                self.update(pat, type_val(mo.group(1)))
+               continue
+         if "trainpos" in line:
+            self["trainpos"].append(line.split(".")[0]+".")
+         if "trainneg" in line:
+            self["trainneg"].append(line.split(".")[0]+".")
+         
       if "_USER_TIME" in self:
          self["USER_TIME"] = self["_USER_TIME"]
          del self["_USER_TIME"]
@@ -55,6 +65,9 @@ class Result(dict):
       if limit:
          return ok and result["USER_TIME"] <= limit
       return ok
+
+   def failed(result):
+      return "STATUS" not in result
 
    def limit(result):
       return result["TIME_LIMIT"]
