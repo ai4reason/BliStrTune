@@ -60,6 +60,6 @@ To run this software you need to have Python, Perl, and Ruby installed.
    
    ```
    $ BliStr-import-results.py BliStrTune-test-* test 1
-   $ ./expres-greedy.py test 1
+   $ expres-greedy.py test 1
    ```
 
