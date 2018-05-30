@@ -58,5 +58,5 @@ cp -r $ATP_ROOT/benchmarks/$BST_BENCHMARK $DIR/allprobs
 mkdir -p $DIR/strats
 mkdir -p $DIR/prots
 
-(cd $DIR; ./BliStrTune.pl)
+(cd $DIR; ./BliStrTune.pl | tee nohup.out) 
 

@@ -56,8 +56,10 @@ To run this software you need to have Python, Perl, and Ruby installed.
    $ ./BliStrTune-RUN.sh
    ```
 
-### Get results 
-
+### Get results (optional)
+   
    ```
+   $ BliStr-import-results.py BliStrTune-test-* test 1
    $ ./expres-greedy.py test 1
    ```
+
